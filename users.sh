@@ -8,47 +8,79 @@
 # Version 4: Fixing bug when there is no option, basename in the program name, 
 #            -V extracting directly from header, added option --help and --version
 # Version 5: Add options -s and --sort
+# Version 6: Add options -r, --reverse, -u, --uppercase,
+#            read multiple options (loop)
 
 sort=0
+reverse=0
+uppercase=0
 
 HELP_MESSAGE="
-USE: $(basename "$0") [-h | -V]
+USE: $(basename "$0") [OPTIONS]
 
-    -h      Show this help screen
-    -V      Show the program version
+OPTIONS:
+    -r, --reverse   Reverse the users list
+    -s, --sort      Sort the users list alphabetically
+    -u, --upercase  Show the users list in UPPER CASE
+
+    -h, --help      Show this help screen
+    -V, --version   Show the program version
 "
 
-case "$1" in
-    -s | --sort)
-        sort=1
-    ;;
+while test -n "$1"
+do
+    case "$1" in
+        -s | --sort)
+            sort=1
+        ;;
 
-    -h | --help)
-        echo "$HELP_MESSAGE"
-        exit 0
-    ;;
+        -r | --reverse)
+             reverse=1
+        ;;
 
-    -V | --version)
-        echo -n $(basename "$0") 
-        grep '^# Version ' users.sh | tail -1 | cut -d : -f 1 | tr -d \#
-        exit 0
-    ;;
+        -u | --uppercase)
+            uppercase=1
+        ;;
 
-    *)
-        if test -n "$1"
-        then
-            echo Invalid Option: $1
-            exit 1
-        fi
-    ;;
+        -h | --help)
+            echo "$HELP_MESSAGE"
+            exit 0
+        ;;
 
-esac
+        -V | --version)
+            echo -n $(basename "$0") 
+            grep '^# Version ' users.sh | tail -1 | cut -d : -f 1 | tr -d \#
+            exit 0
+        ;;
+
+        *)
+            if test -n "$1"
+            then
+                echo Invalid Option: $1
+                exit 1
+            fi
+        ;;
+
+    esac
+
+    shift
+done
 
 users=$(cut -d : -f 1,5 /etc/passwd)
 
 if test "$sort" = 1
 then
     users=$(echo "$users" | sort)
+fi
+
+if test "$reverse" = 1
+then
+    users=$(echo "$users" | tac)
+fi
+
+if test "$uppercase" = 1
+then
+    users=$(echo "$users" | tr a-z A-Z)
 fi
 
 echo "$users" | tr : \\t
