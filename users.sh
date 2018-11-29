@@ -5,13 +5,26 @@
 HELP_MESSAGE="
 USE: $O [-h]
 
-    -h      Show this help screen and exit
+    -h      Show this help screen
+    -V      Show the program version
 "
 
-if test "$1" = "-h"
-then
-    echo "$HELP_MESSAGE"
-    exit 0
-fi
+case "$1" in
+    -h)
+        echo "$HELP_MESSAGE"
+        exit 0
+    ;;
+
+    -V)
+        echo $0 Version 3
+        exit 0
+    ;;
+
+    *)
+        echo Invalid Option: $1
+        exit 1
+    ;;
+
+esac
 
 cut -d : -f 1,5 /etc/passwd | tr : \\t
