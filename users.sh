@@ -3,7 +3,7 @@
 # Show the logins and names of the users in a system
 
 HELP_MESSAGE="
-USE: $O [-h]
+USE: $O [-h | -V]
 
     -h      Show this help screen
     -V      Show the program version
