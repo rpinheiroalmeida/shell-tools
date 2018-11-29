@@ -10,12 +10,12 @@ USE: $(basename "$0") [-h | -V]
 "
 
 case "$1" in
-    -h)
+    -h | --help)
         echo "$HELP_MESSAGE"
         exit 0
     ;;
 
-    -V)
+    -V | --version)
         echo $0 Version 3
         exit 0
     ;;
