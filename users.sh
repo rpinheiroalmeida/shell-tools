@@ -7,6 +7,9 @@
 # Version 3: Add suport to option -V and invalid options
 # Version 4: Fixing bug when there is no option, basename in the program name, 
 #            -V extracting directly from header, added option --help and --version
+# Version 5: Add options -s and --sort
+
+sort=0
 
 HELP_MESSAGE="
 USE: $(basename "$0") [-h | -V]
@@ -16,6 +19,10 @@ USE: $(basename "$0") [-h | -V]
 "
 
 case "$1" in
+    -s | --sort)
+        sort=1
+    ;;
+
     -h | --help)
         echo "$HELP_MESSAGE"
         exit 0
@@ -37,4 +44,11 @@ case "$1" in
 
 esac
 
-cut -d : -f 1,5 /etc/passwd | tr : \\t
+users=$(cut -d : -f 1,5 /etc/passwd)
+
+if test "$sort" = 1
+then
+    users=$(echo "$users" | sort)
+fi
+
+echo "$users" | tr : \\t
