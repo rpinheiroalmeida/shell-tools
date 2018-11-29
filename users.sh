@@ -30,17 +30,9 @@ OPTIONS:
 while test -n "$1"
 do
     case "$1" in
-        -s | --sort)
-            sort=1
-        ;;
-
-        -r | --reverse)
-             reverse=1
-        ;;
-
-        -u | --uppercase)
-            uppercase=1
-        ;;
+        -s | --sort) sort=1 ;;
+        -r | --reverse) reverse=1 ;;
+        -u | --uppercase) uppercase=1 ;;
 
         -h | --help)
             echo "$HELP_MESSAGE"
@@ -68,19 +60,8 @@ done
 
 users=$(cut -d : -f 1,5 /etc/passwd)
 
-if test "$sort" = 1
-then
-    users=$(echo "$users" | sort)
-fi
-
-if test "$reverse" = 1
-then
-    users=$(echo "$users" | tac)
-fi
-
-if test "$uppercase" = 1
-then
-    users=$(echo "$users" | tr a-z A-Z)
-fi
+test "$sort" = 1 && users=$(echo "$users" | sort)
+test "$reverse" = 1 && users=$(echo "$users" | tac)
+test "$uppercase" = 1 && users=$(echo "$users" | tr a-z A-Z)
 
 echo "$users" | tr : \\t
