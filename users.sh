@@ -1,6 +1,12 @@
 #!/bin/bash
 
 # Show the logins and names of the users in a system
+#
+# Version 1: Show users and names splited by TAB
+# Version 2: Add suport to option -h
+# Version 3: Add suport to option -V and invalid options
+# Version 4: Fixing bug when there is no option, basename in the program name, 
+#            -V extracting directly from header, added option --help and --version
 
 HELP_MESSAGE="
 USE: $(basename "$0") [-h | -V]
@@ -16,7 +22,8 @@ case "$1" in
     ;;
 
     -V | --version)
-        echo $0 Version 3
+        echo -n $(basename "$0") 
+        grep '^# Version ' users.sh | tail -1 | cut -d : -f 1 | tr -d \#
         exit 0
     ;;
 
