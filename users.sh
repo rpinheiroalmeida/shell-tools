@@ -21,8 +21,11 @@ case "$1" in
     ;;
 
     *)
-        echo Invalid Option: $1
-        exit 1
+        if test -n "$1"
+        then
+            echo Invalid Option: $1
+            exit 1
+        fi
     ;;
 
 esac
