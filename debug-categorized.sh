@@ -3,7 +3,17 @@
 DEBUG=${1:-0}
 
 Debug() {
-    [ $1 -le $DEBUG ] && echo "----- DEBUG $*"
+    [ $1 -le $DEBUG ] || return
+    local prefix
+    case "$1" in
+        1) prefix="-- " ;;
+        2) prefix="---- " ;;
+        3) prefix="------ " ;;
+        *) echo "Message does not categorized: $*";  return ;;
+    esac
+    shift
+
+    echo $prefix$*
 }
 
 Debug 1 "Start of the Program"
